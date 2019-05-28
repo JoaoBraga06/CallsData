@@ -17,7 +17,8 @@ public class Demo {
     public static void main(String[] args) {
         CallsData c = new CallsData();
         
-        c.calculateAverageMinutesPerArea("415", "yo");
+        c.calculateAverageMinutesPerArea("415", "415");
+        c.calculateAverageMinutesPerNumber();
     }
     
 }

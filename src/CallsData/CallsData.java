@@ -30,14 +30,13 @@ public class CallsData implements CallsDataContract{
             String csvSplitBy= ";";
             
             br =  new BufferedReader(new FileReader(csvFile));
+            line=br.readLine();
             while((line=br.readLine())!=null){
                 soma=0;
                 min = line.split(csvSplitBy);
-    //          if(!min[1].contains("a")){
                     soma+=Double.parseDouble(min[1])+Double.parseDouble(min[2])+Double.parseDouble(min[3]);
 
-                    System.out.println("Número: "+min[6]+" Minutos: "+soma+'\n');
-    //          }
+                    System.out.println("Phone Number: "+min[6]+" Minutes: "+soma+'\n');
             }
             
         } catch (FileNotFoundException ex) {
@@ -61,15 +60,13 @@ public class CallsData implements CallsDataContract{
             String csvSplitBy= ";";
             
             br =  new BufferedReader(new FileReader(csvFile));
+            line=br.readLine();
             while((line=br.readLine())!=null){
                 min = line.split(csvSplitBy);
-    //          if(!min[1].contains("a") && i!=1){
                     if(Integer.parseInt(min[5])==Integer.parseInt(area_code)){
                         res+=Double.parseDouble(min[1])+Double.parseDouble(min[2])+Double.parseDouble(min[3]);
                         i++;
-                    }
-    //          }
-                
+                    }            
             }
             
         } catch (FileNotFoundException ex) {
