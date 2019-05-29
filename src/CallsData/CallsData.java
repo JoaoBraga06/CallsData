@@ -18,43 +18,47 @@ import java.util.logging.Logger;
  * @author joaop
  */
 public class CallsData implements CallsDataContract{    
+    
     @Override
     public double calculateAverageMinutesPerNumber() {
-        int soma=0;
+        double res=0;
+        int i=0;
         String[] min;
  
-        try{
-            String csvFile = "/Users/joaop/Downloads/CallsData.csv";
-            BufferedReader br = null;
-            String line;
-            String csvSplitBy= ";";
-            
+        String csvFile = "CallsData.csv";
+        BufferedReader br = null;
+        String line;
+        String csvSplitBy= ";";
+        
+        try{            
             br =  new BufferedReader(new FileReader(csvFile));
             line=br.readLine();
             while((line=br.readLine())!=null){
-                soma=0;
                 min = line.split(csvSplitBy);
-                    soma+=Double.parseDouble(min[1])+Double.parseDouble(min[2])+Double.parseDouble(min[3]);
-
-                    System.out.println("Phone Number: "+min[6]+" Minutes: "+soma+'\n');
+                    res+=Double.parseDouble(min[1])+Double.parseDouble(min[2])+Double.parseDouble(min[3]);
+                    i++;
             }
             
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(CallsData.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("File not found");
         } catch (IOException ex) {
-            Logger.getLogger(CallsData.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Invalid IO");
         }
-        return soma;
+        
+        res=res/i;
+        System.out.println("Minutes per phone number: "+res+'\n');
+        return res;
         
     }
 
     @Override
     public double calculateAverageMinutesPerArea(String area_code, String outputFileName) {
         String[] min;
-        int res=0, i=0;
+        double res=0;
+        int i=0;
  
         try{
-            String csvFile = "/Users/joaop/Downloads/CallsData.csv";
+            String csvFile = "CallsData.csv";
             BufferedReader br = null;
             String line;
             String csvSplitBy= ";";
@@ -63,11 +67,18 @@ public class CallsData implements CallsDataContract{
             line=br.readLine();
             while((line=br.readLine())!=null){
                 min = line.split(csvSplitBy);
-                    if(Integer.parseInt(min[5])==Integer.parseInt(area_code)){
-                        res+=Double.parseDouble(min[1])+Double.parseDouble(min[2])+Double.parseDouble(min[3]);
-                        i++;
-                    }            
+                if(area_code.equals(min[5])){
+                    res+=Double.parseDouble(min[1])+Double.parseDouble(min[2])+Double.parseDouble(min[3]);
+                    i++;
+                }            
             }
+            
+            FileWriter file = new FileWriter(outputFileName+".csv");
+            file.append(Double.toString(res));
+            
+            file.flush();
+            file.close();
+            System.out.println("File "+outputFileName+".csv"+" saved."+'\n');
             
         } catch (FileNotFoundException ex) {
             Logger.getLogger(CallsData.class.getName()).log(Level.SEVERE, null, ex);
@@ -76,16 +87,6 @@ public class CallsData implements CallsDataContract{
         }  
         
         res=res/i;
-        
-        try {
-            FileWriter file = new FileWriter(outputFileName+".csv");
-            file.append(Integer.toString(res));
-            
-            file.flush();
-            file.close();
-        } catch (IOException ex) {
-            Logger.getLogger(CallsData.class.getName()).log(Level.SEVERE, null, ex);
-        }
         return res;
     }
     
